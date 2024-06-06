@@ -4,7 +4,10 @@ import com.kodervine_crud.quickstart.services.BluePrinter;
 import com.kodervine_crud.quickstart.services.GreenPrinter;
 import com.kodervine_crud.quickstart.services.RedPrinter;
 import com.kodervine_crud.quickstart.services.ColorPrinter;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ColorPrinterImpl implements ColorPrinter {
     private RedPrinter redPrinter;
 
