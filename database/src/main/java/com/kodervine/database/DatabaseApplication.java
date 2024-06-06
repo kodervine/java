@@ -12,7 +12,6 @@ import javax.sql.DataSource;
 @Log
 public class DatabaseApplication implements CommandLineRunner {
 	private final DataSource dataSource;
-
 	public DatabaseApplication(final DataSource dataSource) {this.dataSource = dataSource;}
 
 	public static void main(String[] args) {
