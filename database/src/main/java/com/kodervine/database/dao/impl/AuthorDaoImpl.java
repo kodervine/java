@@ -4,6 +4,7 @@ import com.kodervine.database.dao.AuthorDao;
 import com.kodervine.database.domain.Author;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import javax.xml.transform.Result;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class AuthorDaoImpl implements AuthorDao {
 
     private JdbcTemplate jdbcTemplate;

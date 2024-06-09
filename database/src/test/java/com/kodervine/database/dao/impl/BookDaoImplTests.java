@@ -1,5 +1,6 @@
 package com.kodervine.database.dao.impl;
 
+import com.kodervine.database.TestDataUtil;
 import com.kodervine.database.domain.Book;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,11 +24,7 @@ public class BookDaoImplTests {
 
     @Test
     public void testThatCreateBookGeneratesTheCorrectSql() {
-        Book book = Book.builder()
-                .isbn("123-456-789")
-                .title("Heheh book")
-                .authorId(1L)
-                .build();
+        Book book = TestDataUtil.createTestBook();
 
         underTest.create(book);
 
@@ -44,7 +41,7 @@ public class BookDaoImplTests {
         underTest.find("123-456-789");
 
         verify(jdbcTemplate).query(
-                eq("SELECT isbn, title, author_id from books WHERE isn = ? LIMIT 1"),
+                eq("SELECT isbn, title, author_id from books WHERE isbn = ? LIMIT 1"),
                 ArgumentMatchers.<BookDaoImpl.BookRowMapper>any(),
                 eq("123-456-789")
         );

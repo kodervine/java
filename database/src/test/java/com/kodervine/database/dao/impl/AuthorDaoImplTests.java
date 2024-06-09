@@ -1,5 +1,6 @@
 package com.kodervine.database.dao;
 
+import com.kodervine.database.TestDataUtil;
 import com.kodervine.database.dao.impl.AuthorDaoImpl;
 import com.kodervine.database.domain.Author;
 import org.junit.jupiter.api.Test;
@@ -9,12 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
-import static org.hamcrest.Matchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.postgresql.hostchooser.HostRequirement.any;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthorDaoImplTests {
@@ -27,11 +25,7 @@ public class AuthorDaoImplTests {
 
     @Test
     public void testThatCreateAuthorGeneratesCorrectSql() {
-        Author author = Author.builder()
-                .id(1L)
-                .name("TKii hehe")
-                .age(40)
-                .build();
+        Author author = TestDataUtil.createTestAuthor();
         underTest.create(author);
 
         verify(jdbcTemplate).update(eq("INSERT INTO authors(id, name, age) VALUES (?, ?, ?)"),
