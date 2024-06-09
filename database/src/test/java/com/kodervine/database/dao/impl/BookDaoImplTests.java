@@ -1,9 +1,9 @@
-package com.kodervine.database.dao;
+package com.kodervine.database.dao.impl;
 
-import com.kodervine.database.dao.impl.BookDaoImpl;
 import com.kodervine.database.domain.Book;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -37,6 +37,17 @@ public class BookDaoImplTests {
                 eq(1L)
 
         );
+    }
 
+    @Test
+    public void testThatFindOneBookGeneratesCorrectSql(){
+        underTest.find("123-456-789");
+
+        verify(jdbcTemplate).query(
+                eq("SELECT isbn, title, author_id from books WHERE isn = ? LIMIT 1"),
+                ArgumentMatchers.<BookDaoImpl.BookRowMapper>any(),
+                eq("123-456-789")
+        );
     }
 }
+
