@@ -38,7 +38,6 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     // convert from return set to an object
-
     public static class AuthorRowMapper implements RowMapper<Author> {
         @Override
                 public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -48,5 +47,10 @@ public class AuthorDaoImpl implements AuthorDao {
                     .age(rs.getInt("age"))
                     .build();
         }
+    }
+
+    @Override
+    public List<Author> find() {
+       return jdbcTemplate.query("SELECT id, name, age FROM authors", new AuthorRowMapper());
     }
 }
