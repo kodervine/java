@@ -27,7 +27,6 @@ public class BookDaoImplTests {
         Book book = TestDataUtil.createTestBookA();
 
         underTest.create(book);
-
         verify(jdbcTemplate).update(eq("INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)"),
                 eq("123-456-789"),
                 eq("Heheh book"),
@@ -55,6 +54,16 @@ public class BookDaoImplTests {
                 eq("SELECT isbn, title, author_id from books"),
                         ArgumentMatchers.<BookDaoImpl.BookRowMapper>any()
         );
+    }
+
+    @Test
+    public void testThatUpdateGeneratesCorrectSql() {
+        Book book = TestDataUtil.createTestBookA();
+        underTest.update("123-456-789", book);
+
+        verify(jdbcTemplate).update(
+                "UPDATE books SET isbn = ? , title = ?, author_id = ? WHERE isbn = ?",
+                "123-456-789", "Heheh book", 1L, "123-456-789");
     }
 }
 
