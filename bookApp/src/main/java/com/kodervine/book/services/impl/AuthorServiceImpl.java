@@ -1,0 +1,17 @@
+package com.kodervine.book.services.impl;
+
+import com.kodervine.book.domain.entities.AuthorEntity;
+import com.kodervine.book.repositories.AuthorRepository;
+import com.kodervine.book.services.AuthorService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthorServiceImpl implements AuthorService {
+
+    private AuthorRepository authorRepository;
+
+    @Override
+    public AuthorEntity createAuthor(AuthorEntity authorEntity) {
+      return authorRepository.save(authorEntity);
+    }
+}
