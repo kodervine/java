@@ -3,6 +3,8 @@ package com.kodervine.book.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kodervine.book.TestDataUtil;
 import com.kodervine.book.domain.dto.BookDto;
+import com.kodervine.book.domain.entities.BookEntity;
+import com.kodervine.book.services.BookService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,12 @@ public class BookControllerIntegrationTests {
 
     private ObjectMapper objectMapper;
 
+    private BookService bookService;
+
     @Autowired // make sure everything is injected
-    public BookControllerIntegrationTests(MockMvc mockMvc) {
+    public BookControllerIntegrationTests(MockMvc mockMvc, BookService bookService) {
         this.mockMvc = mockMvc;
+        this.bookService = bookService;
         this.objectMapper = new ObjectMapper();
     }
 
@@ -59,6 +64,30 @@ public class BookControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.isbn").value(bookDto.getIsbn())
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.title").value(bookDto.getTitle())
+        );
+    }
+
+    @Test
+    public void  testThatListBooksReturnsStatus200Ok() throws Exception{
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatListBooksReturnsBook() throws Exception {
+       BookEntity testBookEntityA = TestDataUtil.createTestBookEntityA(null);
+       bookService.createBook(testBookEntityA.getIsbn(), testBookEntityA);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].isbn").value("1230-456-789")
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].title").value("Heheh book 2")
         );
     }
 }
