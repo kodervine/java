@@ -1,31 +1,37 @@
 package com.kodervine.book.controllers;
 
+import com.kodervine.book.domain.dto.BookDto;
 import com.kodervine.book.domain.entities.BookEntity;
+import com.kodervine.book.mappers.Mapper;
+import com.kodervine.book.services.BookService;
 import lombok.extern.java.Log;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Log
 public class BookController {
 
-    @GetMapping(path = "/books")
-    public BookEntity retrieveBook() {
-        return BookEntity.builder()
-                .isbn("1230-456-789")
-                .title("Heheh book")
-                .author("Hehehe Tkii")
-                .yearPublished("2005")
-                .build();
+    private Mapper<BookEntity, BookDto> bookMapper;
+
+    private BookService bookService;
+
+    public BookController(Mapper<BookEntity, BookDto> bookMapper, BookService bookService) {
+        this.bookMapper = bookMapper;
+        this.bookService = bookService;
     }
 
-    @PostMapping(path = "/books")
-    public BookEntity createBook(@RequestBody final BookEntity bookEntity){
-        log.info("God book: " +  bookEntity.toString());
-        return bookEntity;
-    }
+    @PutMapping("/books/{isbn}")
+    public ResponseEntity<BookDto> createBook(
+            @PathVariable("isbn") String isbn,
+            @RequestBody BookDto bookDto) {
+      BookEntity bookEntity = bookMapper.mapFrom(bookDto);
+     BookEntity savedBookEntity = bookService.createBook(isbn, bookEntity);
+     BookDto savedBookDto = bookMapper.mapTo(savedBookEntity);
 
+     return new ResponseEntity<>(savedBookDto, HttpStatus.CREATED);
+
+   }
 
 }

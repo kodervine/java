@@ -2,6 +2,7 @@ package com.kodervine.book;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kodervine.book.domain.dto.AuthorDto;
+import com.kodervine.book.domain.dto.BookDto;
 import com.kodervine.book.domain.entities.AuthorEntity;
 import com.kodervine.book.domain.entities.BookEntity;
 
@@ -46,6 +47,14 @@ public final class TestDataUtil {
                 .isbn("978-1-2345-6789-0")
                 .title("The Shadow in the Attic")
                 .author("Nenye nwa")
+                .build();
+    }
+
+    public static BookDto createTestBookDtoA(final AuthorDto author) {
+        return BookDto.builder()
+                .isbn("978-1-2345-6789-0")
+                .title("The Shadow in the Attic")
+                .author(author)
                 .build();
     }
 
