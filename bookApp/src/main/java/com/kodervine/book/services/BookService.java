@@ -3,6 +3,7 @@ package com.kodervine.book.services;
 import com.kodervine.book.domain.entities.BookEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 // when I hover on the circle and arrow down cos of the 1 related problem it leads me to creating the impl
 public interface BookService {
@@ -11,4 +12,6 @@ public interface BookService {
 
 
     List<BookEntity> findAll();
+
+    Optional<BookEntity> findOne(String isbn);
 }

@@ -68,7 +68,7 @@ public class BookControllerIntegrationTests {
     }
 
     @Test
-    public void  testThatListBooksReturnsStatus200Ok() throws Exception{
+    public void  testThatListBooksReturnsStatus20O() throws Exception{
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/books")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -89,5 +89,25 @@ public class BookControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$[0].title").value("Heheh book 2")
         );
+    }
+
+    @Test
+    public void  testThatGetBookReturnsStatus200WhenBookExists() throws Exception{
+        BookEntity testBookEntityA = TestDataUtil.createTestBookEntityA(null);
+        bookService.createBook(testBookEntityA.getIsbn(), testBookEntityA);
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/books/" + testBookEntityA.getIsbn())
+                        .contentType(MediaType.APPLICATION_JSON)
+
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void  testThatGetBookReturnsStatus404WhenBookDoesntExist() throws Exception{
+         mockMvc.perform(
+                MockMvcRequestBuilders.get("/books/123-456/2929")
+                        .contentType(MediaType.APPLICATION_JSON)
+
+        ).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
